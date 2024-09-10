@@ -1,3 +1,4 @@
+import StyledComponentsRegistry from '../../lib/registry';
 import './globals.css';
 import MoviesProvider from '@/context/MoviesContext';
 
@@ -10,7 +11,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <MoviesProvider>{children}</MoviesProvider>
+        <StyledComponentsRegistry>
+          <MoviesProvider>{children}</MoviesProvider>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );
