@@ -9,8 +9,9 @@ export const MoviesContext = createContext(undefined);
 
 const MoviesProvider = ({ children }) => {
   const [popularMovies, setPopularMovies] = useState([]);
+  const [genres, setGenres] = useState([]);
   const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const {
     currentPage,
@@ -20,18 +21,18 @@ const MoviesProvider = ({ children }) => {
     goToPreviousPage
   } = usePagination();
 
-  const getPopularMovies = useCallback(
+  const fetchPopularMovies = useCallback(
     async (page = 1) => {
       try {
-        setLoading(true);
-        setError(false);
-
-        const response = await axios.get(`${MOVIES_BASE_API_URL}/popular`, {
-          params: {
-            ...moviesParams,
-            page
+        const response = await axios.get(
+          `${MOVIES_BASE_API_URL}/movie/popular`,
+          {
+            params: {
+              ...moviesParams,
+              page
+            }
           }
-        });
+        );
         const movies = response.data.results;
 
         setPopularMovies(movies);
@@ -45,19 +46,37 @@ const MoviesProvider = ({ children }) => {
     [setTotalPages]
   );
 
-  useEffect(() => {
-    getPopularMovies(currentPage);
-  }, [getPopularMovies, currentPage]);
+  const fetchGenres = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `${MOVIES_BASE_API_URL}/genre/movie/list`,
+        {
+          params: moviesParams
+        }
+      );
+      setGenres(response.data.genres);
+    } catch (error) {
+      console.error('Failed to fetch genres:', error);
+    }
+  }, []);
 
+  useEffect(() => {
+    fetchPopularMovies(currentPage);
+    fetchGenres();
+  }, [fetchPopularMovies, fetchGenres, currentPage]);
+
+  console.log('genres:', genres);
   return (
     <MoviesContext.Provider
       value={{
-        getPopularMovies,
+        fetchPopularMovies,
         popularMovies,
         error,
         loading,
         currentPage,
         totalPages,
+        genres,
+        fetchGenres,
         goToNextPage,
         goToPreviousPage
       }}
