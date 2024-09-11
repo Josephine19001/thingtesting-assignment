@@ -65,7 +65,6 @@ const MoviesProvider = ({ children }) => {
     fetchGenres();
   }, [fetchPopularMovies, fetchGenres, currentPage]);
 
-  console.log('genres:', genres);
   return (
     <MoviesContext.Provider
       value={{

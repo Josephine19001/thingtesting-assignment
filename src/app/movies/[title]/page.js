@@ -19,6 +19,8 @@ const Container = styled.div`
 const Header = styled.div`
   display: flex;
   gap: 48px;
+  flex-wrap: wrap;
+
   margin-bottom: 24px;
 `;
 
@@ -48,10 +50,14 @@ const ScreenshotContainer = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 16px;
   margin-top: 16px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
 `;
 
 const Screenshot = styled(Image)`
-  border-radius: 8px;
+  padding: 8px;
 `;
 
 const BackButton = styled.button`
