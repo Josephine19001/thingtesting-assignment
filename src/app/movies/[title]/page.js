@@ -19,9 +19,13 @@ const Container = styled.div`
 const Header = styled.div`
   display: flex;
   gap: 48px;
-  flex-wrap: wrap;
 
   margin-bottom: 24px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 16px;
+  }
 `;
 
 const Poster = styled(Image)`
@@ -159,6 +163,7 @@ const MovieDetail = () => {
           alt="poster"
           width={300}
           height={450}
+          priority
         />
       </Header>
       <h2>Screenshots</h2>
@@ -170,6 +175,7 @@ const MovieDetail = () => {
             alt={`screenshot-${index}`}
             width={150}
             height={100}
+            priority
           />
         ))}
       </ScreenshotContainer>
